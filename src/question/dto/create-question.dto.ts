@@ -1,10 +1,13 @@
-export class CreateQuestionDto {
+import { InputType, ObjectType, PickType } from "@nestjs/graphql";
+import { Question } from "../entities/question.entity";
+import { CoreOutput } from "src/common/dto/output.dto";
 
-    surveyId: number;
+@InputType()
+export class CreateQuestionInput extends PickType(Question, [
+    'surveyId',
+    'questionNumber',
+    'questionContent'
+]) {}
 
-    questionNumber: number;
-
-    questionContent: string;
-
-    
-}
+@ObjectType()
+export class CreateQuestionOutput extends CoreOutput {}

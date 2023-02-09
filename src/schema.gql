@@ -1,0 +1,175 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type QuestionOption {
+  id: Int!
+  questionId: Int!
+  optionContent: String!
+  score: Int!
+  question: Question!
+  answerOption: [AnswerOption!]
+}
+
+type AnswerOption {
+  id: Int!
+  questionOptionId: Int!
+  answerId: Int!
+  answerScore: Int!
+  answer: Answer!
+  questionOption: QuestionOption!
+}
+
+type User {
+  id: Int!
+  name: String!
+  gender: String!
+  userSurvey: [UserSurvey!]
+}
+
+type UserSurvey {
+  id: Int!
+  surveyId: Int!
+  userId: Int!
+  status: String!
+  totalScore: Int!
+  answer: [Answer!]
+  user: User!
+  survey: Survey!
+}
+
+type Answer {
+  id: Int!
+  userSurveyId: Int!
+  questionId: Int!
+  question: Question!
+  userSurvey: [UserSurvey!]
+  answerOption: [AnswerOption!]
+}
+
+type Question {
+  id: Int!
+  surveyId: Int!
+  questionNumber: Int!
+  questionContent: String!
+  survey: Survey!
+  questionOption: [QuestionOption!]
+  answer: [Question!]
+}
+
+type Survey {
+  id: Int!
+  title: String!
+  description: String!
+  status: String!
+  question: [Question!]
+  userSurvey: [UserSurvey!]
+}
+
+type CreateSurveyOutput {
+  message: String
+  error: String
+  ok: Boolean!
+}
+
+type CreateQuestionOutput {
+  message: String
+  error: String
+  ok: Boolean!
+}
+
+type CreateUserOutput {
+  message: String
+  error: String
+  ok: Boolean!
+}
+
+type CreateUserSurveyOutput {
+  message: String
+  error: String
+  ok: Boolean!
+}
+
+type CreateAnswerOutput {
+  message: String
+  error: String
+  ok: Boolean!
+}
+
+type CreateQuestionOptionOutput {
+  message: String
+  error: String
+  ok: Boolean!
+}
+
+type CreateAnswerOptionOutput {
+  message: String
+  error: String
+  ok: Boolean!
+}
+
+type Query {
+  getAllSurvey: [Survey!]!
+  getSurveyByStatus(status: String!): [Survey!]!
+  getAllQuestion: [Question!]!
+  getQuestionBySurveyId(surveyId: Int!): [Question!]!
+  getAllUser: [User!]!
+  getUserByName(name: String!): [User!]!
+  getAllUserSurvey: [UserSurvey!]!
+  getUserSurveyByStatus(status: String!): [UserSurvey!]!
+  getAllAnswer: [Answer!]!
+  getAllQuestionOption: [QuestionOption!]!
+  getQuestionById(id: Int!): QuestionOption!
+  getAllAnswerOption: [AnswerOption!]!
+}
+
+type Mutation {
+  createSurvey(input: CreateSurveyInput!): CreateSurveyOutput!
+  createQuestion(input: CreateQuestionInput!): CreateQuestionOutput!
+  createUser(input: CreateUserInput!): CreateUserOutput!
+  createUserSurvey(input: CreateUserSurveyInput!): CreateUserSurveyOutput!
+  createAnswer(input: CreateAnswerInput!): CreateAnswerOutput!
+  createQuestionOption(input: CreateQuestionOptionInput!): CreateQuestionOptionOutput!
+  createAnswerOption(input: CreateAnswerOptionInput!): CreateAnswerOptionOutput!
+}
+
+input CreateSurveyInput {
+  title: String!
+  description: String!
+  status: String! = "진행 중"
+}
+
+input CreateQuestionInput {
+  surveyId: Int!
+  questionNumber: Int!
+  questionContent: String!
+}
+
+input CreateUserInput {
+  name: String!
+  gender: String!
+}
+
+input CreateUserSurveyInput {
+  surveyId: Int!
+  userId: Int!
+  status: String! = "미완료"
+  totalScore: Int! = 0
+}
+
+input CreateAnswerInput {
+  userSurveyId: Int!
+  questionId: Int!
+}
+
+input CreateQuestionOptionInput {
+  questionId: Int!
+  optionContent: String!
+  score: Int!
+}
+
+input CreateAnswerOptionInput {
+  questionOptionId: Int!
+  answerId: Int!
+  answerScore: Int! = 0
+}

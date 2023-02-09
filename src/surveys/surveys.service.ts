@@ -1,68 +1,153 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { SurveyStatus } from './survey-status.enum';
-import { CreateSurveyDto } from './dto/create-survey.dto';
 import { Survey } from './entities/survey.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateSurveyInput, CreateSurveyOutput } from './dto/create-survey.dto';
+import { SearchSurveyInput,  } from './dto/search-survey.dto';
 
 @Injectable()
 export class SurveysService {
     constructor(
         @InjectRepository(Survey)
         private surveysRepository: Repository<Survey>,
-    ) {}
+        private dataSource: DataSource,
+    ) { }
 
-    async getAllSurvey(): Promise <Survey[]> {
+
+    async getAllSurvey(): Promise<Survey[]> {
         return this.surveysRepository.find();
+     
     }
 
+    async getOneSurvey(id: number): Promise<Survey> {
+        const survey = await this.surveysRepository.findOne({
+            where : { id },
+        });
+        if (!survey) throw new NotFoundException('없다네~');
+        return survey;
+    }
 
+    async getSurveyByStatus(status: string) : Promise<Survey[]>{
+        const found = this.surveysRepository.findBy({status})
 
-    async getSurveyById(id:number): Promise <Survey> {
-        const found = await this.surveysRepository.findOneBy({id});
-
-        if(!found) {
-            throw new NotFoundException(`Can't find Survey with ID : ${id}`)
+        if((await found).length === 0) {
+            throw new NotFoundException(`${status}인 설문을 찾을 수 없습니다.`)
         }
-
         return found;
     }
 
-        // 설문지 생성
-    async createSurvey(createSurveyDto: CreateSurveyDto) : Promise<Survey> {
-        const {title, description} = createSurveyDto;
 
-        const survey = this.surveysRepository.create({
-            title,
-            description,
-            status: SurveyStatus.ON_GOING
-        })
-        
-        await this.surveysRepository.save(survey);
-        return survey;
-    }
-
-  
-    async deleteSurvey(id:number): Promise<void> {
-        const result = await this.surveysRepository.delete(id);
-        // remove 는 (존재 유무 + 삭제) 두번의 일을 진행하기에 delete 사용
-        // 대신 에러메시지 하나 던져주기
-        
-        if(result.affected === 0) {
-            throw new NotFoundException(`Can't find Survey with ID : ${id}`)
+    async createSurvey(
+        createSurveyInput: CreateSurveyInput
+    ): Promise<CreateSurveyOutput> {
+        const newSurvey = this.surveysRepository.create(createSurveyInput);
+        await this.surveysRepository.save(newSurvey);
+        return {
+            ok: true,
+            message: '설문 생성에 성공했습니다.'
         }
-
-        console.log('result : ', result);
     }
 
-    async updateSurveyStatus(id: number, status: SurveyStatus): Promise<Survey> {
-        const survey = await this.getSurveyById(id);
 
-        survey.status = status;
-        await this.surveysRepository.save(survey);
+ 
 
-        return survey;
-    }
+ 
+   
+}
+
+ // async searchSurvey({
+    //     status,
+    // }: SearchSurveyInput): Promise<SearchSurveyOutput>{
+    //     try {
+    //         if(!status) {
+    //             return {
+    //                 ok: false,
+    //                 message: '설문 제목을 입력해주세요.',
+    //             };
+    //         }
+    //         const searchReplace = status.replace(/ /gi, '')
+    //         const survey = await this.surveysRepository.find();
+
+    //         const searchSurvey = survey.filter((survey) => {
+    //             const dbStatus = survey.status.replace(/ /gi, '');
+    //             return dbStatus.includes(searchReplace);
+    //         });
+    //         if (searchSurvey.length === 0) {
+    //             return {
+    //                 ok: false,
+    //                 message: '설문 조회 결과가 존재하지 않습니다.',
+    //             };
+    //         }
+    //         return {
+    //             ok: true,
+    //             message: '설문 조회에 성공했습니다.',
+    //             result: searchSurvey,
+    //         };
+            
+    //     } catch (error) {
+    //         throw '와와';
+    //     }
+    // }
+
+    // async getOneById(id: number): Promise<SurveyInfoOutput[]> {
+    //     try {
+    //         const survey = await this.surveysRepository.findBy({title});
+    //         if(survey) {
+    //             return {
+    //                 ok: true,
+    //                 survey,
+    //                 message: '설문 조회에 성공했습니다.',
+    //             };
+    //         }
+    //     }
+    // }
+
+    // async getSurveyById(id:number): Promise <Survey> {
+    //     const found = await this.surveysRepository.findOneBy({id});
+
+    //     if(!found) {
+    //         throw new NotFoundException(`Can't find Survey with ID : ${id}`)
+    //     }
+
+    //     return found;
+    // }
+
+    //     // 설문지 생성
+    // async createSurvey(createSurveyDto: CreateSurveyDto) : Promise<Survey> {
+    //     const {title, description} = createSurveyDto;
+
+    //     const survey = this.surveysRepository.create({
+    //         title,
+    //         description,
+    //         status: SurveyStatus.ON_GOING
+    //     })
+
+    //     await this.surveysRepository.save(survey);
+    //     return survey;
+    // }
+
+
+    // async deleteSurvey(id:number): Promise<void> {
+    //     const result = await this.surveysRepository.delete(id);
+    //     // remove 는 (존재 유무 + 삭제) 두번의 일을 진행하기에 delete 사용
+    //     // 대신 에러메시지 하나 던져주기
+
+    //     if(result.affected === 0) {
+    //         throw new NotFoundException(`Can't find Survey with ID : ${id}`)
+    //     }
+
+    //     console.log('result : ', result);
+    // }
+
+    // async updateSurveyStatus(id: number, status: SurveyStatus): Promise<Survey> {
+    //     const survey = await this.getSurveyById(id);
+
+    //     survey.status = status;
+    //     await this.surveysRepository.save(survey);
+
+    //     return survey;
+    // }
 
     // deleteSurvey(id: string): void{
     //     const found = this.getSurveyById(id);
@@ -76,5 +161,3 @@ export class SurveysService {
     //     // todo : 지금 작성한 쿼리는 하드코딩으로 바꾸는거지만
     //     // 시간 나면 survey의 모든 항목이 작성되면 자동으로 complete로 바꾸게 수정하기
     // }
-
-}
