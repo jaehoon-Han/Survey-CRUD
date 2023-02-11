@@ -34,6 +34,9 @@
     
 #### 3.  "npm run start:dev" 명령어를 통해 서버 실행
     - npm run start:dev
+
+#### 4. 서버 접속
+    - localhost:4000/graphql
 </br>
 
 ## ERD Diagram

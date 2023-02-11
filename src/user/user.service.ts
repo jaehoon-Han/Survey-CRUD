@@ -17,12 +17,12 @@ async getAllUser(): Promise <User[]> {
 }
 
 async getUserById(id: number) {
-    const user = this.userRepository.findOneBy({id})
+    const user = this.userRepository.findOneBy({id});
     return user;
 }
 
 async getUserByName(name: string) {
-    const user = this.userRepository.findBy({name})
+    const user = this.userRepository.findBy({name});
     return user;
 }
  
