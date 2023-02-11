@@ -74,6 +74,7 @@ type Query {
   getAllQuestion: [Question!]!
   getQuestionBySurveyId(surveyId: Int!): [Question!]!
   getAllUser: [User!]!
+  getUserById(id: Int!): [User!]!
   getUserByName(name: String!): [User!]!
   getAllUserSurvey: [UserSurvey!]!
   getUserSurveyByStatus(status: String!): [UserSurvey!]!

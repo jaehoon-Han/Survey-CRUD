@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateUserInput } from './dto/create-user.dto';
 import { UserService } from './user.service';
 import { User } from './entities/user.entity';
@@ -14,9 +14,16 @@ export class UserResolver {
     }
 
     @Query(() => [User])
+    async getUserById(@Args('id', { type: () => Int }) id: number) {
+        const user = await this.usersService.getUserById(id);
+        if (!user) throw new NotFoundException( ` ID : ${id}의 유저가 존재하지 않습니다. `);
+        return user;
+    }
+
+    @Query(() => [User])
     async getUserByName(@Args('name', { type: () => String }) name: string) {
         const user = await this.usersService.getUserByName(name);
-        if (user.length ===0 ) throw new NotFoundException( ` Name : ${name}인 유저가 참여한 설문이 존재하지 않습니다. `);
+        if (user.length ===0 ) throw new NotFoundException( ` Name : ${name}인 유저가 존재하지 않습니다. `);
         return user;
     }
 
