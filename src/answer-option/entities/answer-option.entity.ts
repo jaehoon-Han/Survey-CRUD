@@ -31,7 +31,7 @@ export class AnswerOption extends BaseEntity{
     readonly updatedAt: Date;
 
     @Field(() => Answer)
-    @ManyToOne(() => Answer, answer => answer.answerOption, {eager: false})
+    @ManyToOne(() => Answer, answer => answer.answerOption, { onDelete: 'CASCADE',eager: false})
     answer: Answer;
 
     // @Field(() => [QuestionOption], {nullable: true})
@@ -39,13 +39,13 @@ export class AnswerOption extends BaseEntity{
     // questionOption: QuestionOption;
 
     @Field(() => QuestionOption)
-    @ManyToOne(() => QuestionOption, qusetionOption => qusetionOption.answerOption, {eager: false})
+    @ManyToOne(() => QuestionOption, qusetionOption => qusetionOption.answerOption, { onDelete: 'CASCADE',eager: false})
     questionOption: QuestionOption;
     // questionOption 테이블과 answerOption의 종속관계를 바꿔보자
     // 기존엔 여기가 manytoone이였다!
 
-    @RelationId((answerOption: AnswerOption) => answerOption.questionOption)
-    OptionId: number;
+    // @RelationId((answerOption: AnswerOption) => answerOption.questionOption)
+    // OptionId: number;
 
 
 

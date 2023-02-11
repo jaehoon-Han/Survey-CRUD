@@ -2,7 +2,6 @@
 //     questionOptionId: number;
 
 import { InputType, ObjectType, PickType } from "@nestjs/graphql";
-import { CoreOutput } from "src/common/dto/output.dto";
 import { AnswerOption } from "../entities/answer-option.entity";
 
 //     answerId: number;
@@ -15,5 +14,3 @@ export class CreateAnswerOptionInput extends PickType(AnswerOption, [
     'answerScore'
 ]) {}
 
-@ObjectType()
-    export class CreateAnswerOptionOutput extends CoreOutput{}

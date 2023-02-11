@@ -28,11 +28,11 @@ export class Answer extends BaseEntity{
     readonly updatedAt: Date;
 
     @Field(() => Question)
-    @ManyToOne(() => Question, question => question.answer,  {eager: false})
+    @ManyToOne(() => Question, question => question.answer,  { onDelete: 'CASCADE',eager: false})
     question: Question;
 
     @Field(() => [UserSurvey], { nullable: true })
-    @ManyToOne(() => UserSurvey, userSurvey => userSurvey.answer, { eager: false})
+    @ManyToOne(() => UserSurvey, userSurvey => userSurvey.answer, { onDelete: 'CASCADE', eager: false})
     userSurvey: UserSurvey;
 
     @Field(() => [AnswerOption], { nullable: true })

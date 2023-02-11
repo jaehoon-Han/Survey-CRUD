@@ -1,7 +1,8 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { QuestionOptionService } from './question-option.service';
 import { QuestionOption } from './entities/question-option.entity';
-import { CreateQuestionOptionInput, CreateQuestionOptionOutput } from './dto/create-question-option.dto';
+import { CreateQuestionOptionInput } from './dto/create-question-option.dto';
+import { NotFoundException } from '@nestjs/common';
 
 @Resolver()
 export class QuestionOptionResolver {
@@ -9,26 +10,26 @@ export class QuestionOptionResolver {
 
     @Query(() => [QuestionOption])
     async getAllQuestionOption() {
-        return this.questionOptionService.getAllQuestionOption();
+        const questionOption = this.questionOptionService.getAllQuestionOption();
+        if (!questionOption) throw new NotFoundException( ` 선택지가 존재하지 않습니다. `)
+        return questionOption;
     }
 
     @Query(() => QuestionOption)
     async getQuestionById(
         @Args('id',{ type: () => Int}) id: number) {
-        try {
-            await this.questionOptionService.getQuestionById(id);
-        } catch(error) {
-            throw "왜왜"
-        }
-        const questionOption = await this.questionOptionService.getQuestionById(id);
-
+            const questionOption = await this.questionOptionService.getQuestionById(id);
+        if(!questionOption) throw new NotFoundException  (` ID : ${id}인 질문의 선택지가 존재하지 않습니다. `);
+       
         return questionOption;
     }
 
-    @Mutation(() => CreateQuestionOptionOutput)
+    @Mutation(() => QuestionOption)
     async createQuestionOption(
         @Args('input') createQuestionOptionInput :CreateQuestionOptionInput,
-    ): Promise<CreateQuestionOptionOutput> {
-        return this.questionOptionService.createQuestionOption(createQuestionOptionInput)
+    ): Promise<QuestionOption> {
+        const newQuestionOption = this.questionOptionService.createQuestionOption(createQuestionOptionInput);
+        return newQuestionOption;
     }
+       
 }

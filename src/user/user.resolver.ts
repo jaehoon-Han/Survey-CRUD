@@ -1,35 +1,31 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { CreateUserInput, CreateUserOutput } from './dto/create-user.dto';
+import { CreateUserInput } from './dto/create-user.dto';
 import { UserService } from './user.service';
 import { User } from './entities/user.entity';
+import { NotFoundException } from '@nestjs/common';
 
 @Resolver()
 export class UserResolver {
-    constructor(private readonly usersService: UserService) {}
+    constructor(private readonly usersService: UserService) { }
 
-    // get All User 모든 유저 조회
     @Query(() => [User])
-    async getAllUser(){
+    async getAllUser() {
         return this.usersService.getAllUser();
     }
 
     @Query(() => [User])
-    async getUserByName(@Args('name',{ type: () => String}) name: string){
-        try {
-            await this.usersService.getUserByName(name);
-        } catch (error) {
-            throw "위위"
-        }
+    async getUserByName(@Args('name', { type: () => String }) name: string) {
         const user = await this.usersService.getUserByName(name);
-
+        if (user.length ===0 ) throw new NotFoundException( ` Name : ${name}인 유저가 참여한 설문이 존재하지 않습니다. `);
         return user;
     }
 
 
-    @Mutation(() => CreateUserOutput)
+    @Mutation(() => User)
     async createUser(
         @Args('input') createUserInput: CreateUserInput,
-    ): Promise<CreateUserOutput> {
-        return this.usersService.createUser(createUserInput);
+    ): Promise<User> {
+        const newUser = this.usersService.createUser(createUserInput);
+        return newUser;
     }
 }

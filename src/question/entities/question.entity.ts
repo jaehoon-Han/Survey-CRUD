@@ -33,7 +33,7 @@ export class Question extends BaseEntity {
     readonly updatedAt: Date;
 
     @Field(() => Survey)
-    @ManyToOne(() => Survey, survey => survey.question)
+    @ManyToOne(() => Survey, survey => survey.question,{ onDelete: 'CASCADE',})
     survey: Survey;
 
     @Field(() => [QuestionOption], { nullable: true })

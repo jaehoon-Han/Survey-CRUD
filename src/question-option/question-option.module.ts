@@ -7,6 +7,8 @@ import { QuestionOptionResolver } from './question-option.resolver';
 @Module({
   imports: [TypeOrmModule.forFeature([QuestionOption])],
   exports: [QuestionOptionService],
-  providers: [QuestionOptionService, QuestionOptionResolver, ]
+  providers: [
+    QuestionOptionService, 
+    QuestionOptionResolver, ]
 })
 export class QuestionOptionModule {}

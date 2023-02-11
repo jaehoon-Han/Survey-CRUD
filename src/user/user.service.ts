@@ -2,8 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
-import { CreateUserInput, CreateUserOutput } from './dto/create-user.dto';
-import { getAllUserOutput } from './dto/get-all-user.dto';
+import { CreateUserInput } from './dto/create-user.dto';
 // import { CreateUserDto } from './dto/user-create.dto';
 
 @Injectable()
@@ -24,26 +23,13 @@ async getUserByName(name: string) {
 }
  
 async createUser(
-    // name,
-    // gender,
+
     createUserInput: CreateUserInput,
-) : Promise<CreateUserOutput> {
+) : Promise<User> {
     const newUser = this.userRepository.create(createUserInput);
     await this.userRepository.save(newUser);
-    return {
-         ok: true,
-         message: '회원가입에 성공했습니다.'}}
+    return newUser;
+}
    
-// async createUser(createUserDto: CreateUserDto) : Promise<User> {
-//     const { name } = createUserDto;
-
-//     const user = this.userRepository.create({
-//         name
-//     })
-//     await this.userRepository.save(user);
-//     return user;
-    
-// }
-
     
 }

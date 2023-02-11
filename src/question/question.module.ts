@@ -10,6 +10,9 @@ import { SurveysService } from 'src/surveys/surveys.service';
   imports: [TypeOrmModule.forFeature([Question]),
             TypeOrmModule.forFeature([Survey])],
   exports: [QuestionService],
-  providers: [QuestionService, QuestionResolver, SurveysService, ]
+  providers: [
+    QuestionService, 
+    QuestionResolver, 
+    SurveysService, ]
 })
 export class QuestionModule { }

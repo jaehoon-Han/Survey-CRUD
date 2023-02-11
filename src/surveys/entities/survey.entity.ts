@@ -24,6 +24,11 @@ export class Survey extends BaseEntity {
     @Field(() => String, { defaultValue: "진행 중" })
     @Column({ nullable: true })
     status: string;
+
+    @Field(() => Int, { defaultValue: 0})
+    @Column({ nullable: false})
+    amountQuestion: number;
+
     
     @CreateDateColumn()
     readonly createdAt: Date;

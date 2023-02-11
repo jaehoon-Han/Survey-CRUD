@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { QuestionOption } from './entities/question-option.entity';
-import { CreateQuestionOptionInput, CreateQuestionOptionOutput } from './dto/create-question-option.dto';
+import { CreateQuestionOptionInput } from './dto/create-question-option.dto';
 
 @Injectable()
 export class QuestionOptionService {
@@ -12,36 +12,23 @@ export class QuestionOptionService {
     ){}
 
     async getAllQuestionOption(): Promise<QuestionOption[]> {
-        return this.questionOptionRepository.find();
+        const questionOption = this.questionOptionRepository.find();
+        return questionOption;
     }
 
     async getQuestionById(id: number) {
         const questionOption = this.questionOptionRepository.findOneBy({id})
-        
-        return questionOption
+        return questionOption;
     }
 
     async createQuestionOption(
         createQuestionOptionInput: CreateQuestionOptionInput
-        ) : Promise<CreateQuestionOptionOutput>{
+        ) : Promise<QuestionOption>{
             const newQuestionOption = this.questionOptionRepository
             .create(createQuestionOptionInput);
             await this.questionOptionRepository.save(newQuestionOption);
-            return {
-                ok: true,
-                message: '응답 항목 생성에 성공했습니다.'
-            }
+            return newQuestionOption;
        
         }
-
-    // async getQuestionOptionByQuestionId(questionId: number): Promise<QuestionOption[]> {
-    //     const found = await this.questionOptionRepository.findBy({questionId});
-
-    //     if(!found) {
-    //         throw new NotFoundException(`Can't find Question with Question ID : ${questionId}`)
-    //     }
-
-    //     return found;
-    // }
 
 }

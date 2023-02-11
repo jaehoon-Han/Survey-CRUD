@@ -1,7 +1,7 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AnswerOptionService } from './answer-option.service';
 import { AnswerOption } from './entities/answer-option.entity';
-import { CreateAnswerOptionInput, CreateAnswerOptionOutput } from './dto/create-answer-option.dto';
+import { CreateAnswerOptionInput } from './dto/create-answer-option.dto';
 
 @Resolver()
 export class AnswerOptionResolver {
@@ -12,10 +12,11 @@ export class AnswerOptionResolver {
         return this.answerOptionService.getAllAnswerOption();
     }
 
-    @Mutation(() => CreateAnswerOptionOutput)
+    @Mutation(() => AnswerOption)
     async createAnswerOption(
         @Args('input') createAnswerOptionInput: CreateAnswerOptionInput,
-    ): Promise<CreateAnswerOptionOutput> {
-        return this.answerOptionService.createAnswerOption(createAnswerOptionInput);
+    ){
+        const newAnswerOption = this.answerOptionService.createAnswerOption(createAnswerOptionInput);
+        return newAnswerOption;
     }
 }

@@ -10,6 +10,9 @@ import { QuestionOption } from 'src/question-option/entities/question-option.ent
   imports: [TypeOrmModule.forFeature([AnswerOption]),
             TypeOrmModule.forFeature([QuestionOption])],
   exports: [AnswerOptionService],
-  providers: [AnswerOptionService, AnswerOptionResolver, QuestionOptionService, ]
+  providers: [
+    AnswerOptionService, 
+    AnswerOptionResolver, 
+    QuestionOptionService, ]
 })
 export class AnswerOptionModule {}

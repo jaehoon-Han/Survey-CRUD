@@ -31,27 +31,11 @@ export class QuestionOption extends BaseEntity {
     readonly updatedAt: Date;
 
     @Field(() => Question)
-    @ManyToOne(() => Question, question => question.questionOption)
+    @ManyToOne(() => Question, question => question.questionOption, { onDelete: 'CASCADE',eager: false})
     question: Question;
     
     @Field(() => [AnswerOption], { nullable: true })
     @OneToMany(type=> AnswerOption, answerOption => answerOption.questionOption, {eager:false})
     answerOption: AnswerOption;
 
-    // @Field(() => AnswerOption)
-    // @ManyToOne(() => AnswerOption, answerOption => answerOption.questionOption, {eager: false})
-    // answerOption: AnswerOption;
-    // 종속 관계 바꾸기
-
-   
-
-
-
-    // @Field(() => ID, { name: 'id'})
-    // get relayId(): number{
-    //     return toGlobalId('QuestionOption', this.id)
-    // }
-
-    // @RelationId((questionOption: QuestionOption) => questionOption.question)
-    // questionId: number;
 }

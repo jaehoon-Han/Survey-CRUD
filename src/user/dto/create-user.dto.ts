@@ -1,10 +1,6 @@
-import { InputType, ObjectType, PickType } from "@nestjs/graphql";
-import { IsNotEmpty } from "class-validator";
-import { CoreOutput } from "src/common/dto/output.dto";
+import { InputType, PickType } from "@nestjs/graphql";
 import { User } from "../entities/user.entity";
 
-    // @IsNotEmpty()
-    // name: string;
 
     @InputType()
     export class CreateUserInput extends PickType(User, [
@@ -12,5 +8,4 @@ import { User } from "../entities/user.entity";
         'gender',
     ]) {}
 
-    @ObjectType()
-    export class CreateUserOutput extends CoreOutput {}
+   

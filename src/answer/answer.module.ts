@@ -7,6 +7,8 @@ import { AnswerResolver } from './answer.resolver';
 @Module({
   imports: [TypeOrmModule.forFeature([Answer])],
   exports: [AnswerService],
-  providers: [AnswerService, AnswerResolver]
+  providers: [
+    AnswerService, 
+    AnswerResolver]
 })
 export class AnswerModule {}

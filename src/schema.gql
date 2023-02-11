@@ -62,81 +62,55 @@ type Survey {
   title: String!
   description: String!
   status: String!
+  amountQuestion: Int!
   question: [Question!]
   userSurvey: [UserSurvey!]
-}
-
-type CreateSurveyOutput {
-  message: String
-  error: String
-  ok: Boolean!
-}
-
-type CreateQuestionOutput {
-  message: String
-  error: String
-  ok: Boolean!
-}
-
-type CreateUserOutput {
-  message: String
-  error: String
-  ok: Boolean!
-}
-
-type CreateUserSurveyOutput {
-  message: String
-  error: String
-  ok: Boolean!
-}
-
-type CreateAnswerOutput {
-  message: String
-  error: String
-  ok: Boolean!
-}
-
-type CreateQuestionOptionOutput {
-  message: String
-  error: String
-  ok: Boolean!
-}
-
-type CreateAnswerOptionOutput {
-  message: String
-  error: String
-  ok: Boolean!
 }
 
 type Query {
   getAllSurvey: [Survey!]!
   getSurveyByStatus(status: String!): [Survey!]!
+  getSurveyById(id: Int!): [Survey!]!
   getAllQuestion: [Question!]!
   getQuestionBySurveyId(surveyId: Int!): [Question!]!
   getAllUser: [User!]!
   getUserByName(name: String!): [User!]!
   getAllUserSurvey: [UserSurvey!]!
   getUserSurveyByStatus(status: String!): [UserSurvey!]!
+  getUserSurveyById(id: Int!): [UserSurvey!]!
+  sumScore(id: Int!): UserSurvey!
   getAllAnswer: [Answer!]!
+  getAnswerUserSurveyId(input: Int!): [Answer!]!
   getAllQuestionOption: [QuestionOption!]!
   getQuestionById(id: Int!): QuestionOption!
   getAllAnswerOption: [AnswerOption!]!
 }
 
 type Mutation {
-  createSurvey(input: CreateSurveyInput!): CreateSurveyOutput!
-  createQuestion(input: CreateQuestionInput!): CreateQuestionOutput!
-  createUser(input: CreateUserInput!): CreateUserOutput!
-  createUserSurvey(input: CreateUserSurveyInput!): CreateUserSurveyOutput!
-  createAnswer(input: CreateAnswerInput!): CreateAnswerOutput!
-  createQuestionOption(input: CreateQuestionOptionInput!): CreateQuestionOptionOutput!
-  createAnswerOption(input: CreateAnswerOptionInput!): CreateAnswerOptionOutput!
+  createSurvey(input: CreateSurveyInput!): Survey!
+  updateSurvey(input: UpdateSurveyInput!): Survey!
+  deleteSurvey(input: Float!): Survey!
+  createQuestion(input: CreateQuestionInput!): Question!
+  createUser(input: CreateUserInput!): User!
+  createUserSurvey(input: CreateUserSurveyInput!): UserSurvey!
+  createAnswer(input: CreateAnswerInput!): Answer!
+  createQuestionOption(input: CreateQuestionOptionInput!): QuestionOption!
+  createAnswerOption(input: CreateAnswerOptionInput!): AnswerOption!
 }
 
 input CreateSurveyInput {
   title: String!
   description: String!
   status: String! = "진행 중"
+  amountQuestion: Int! = 0
+}
+
+input UpdateSurveyInput {
+  surveyId: Int!
+  title: String
+  description: String
+  status: String
+  amountQuestion: Int
 }
 
 input CreateQuestionInput {
