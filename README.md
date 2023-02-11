@@ -22,52 +22,76 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Installation
+## 📌 서버 실행 방법
 
-```bash
-$ npm install
-```
+#### 1. 서버 실행 전 typeorm.config.ts 파일 내 환경 변수 수정
+    - type, host, port ...
+    
+#### 2. 서버 실행 전 필요한 node_module 다운
+    - npm i
+    
+#### 3.  "npm run start:dev" 명령어를 통해 서버 실행
+    - npm run start:dev
+</br>
 
-## Running the app
+## ERD Diagram
+<a href="https://ibb.co/dr5JG64"><img src="https://i.ibb.co/37CYBWm/survey-schema.png" alt="survey-schema" border="0"></a>
 
-```bash
-# development
-$ npm run start
 
-# watch mode
-$ npm run start:dev
 
-# production mode
-$ npm run start:prod
-```
 
-## Test
+## 📌 구현 API 목록
 
-```bash
-# unit tests
-$ npm run test
+#### Survey 
 
-# e2e tests
-$ npm run test:e2e
+- createSurvey : 설문 생성하기
+- updateSurvey : 설문 수정하기
+- deleteSurvey : 설문 삭제하기 ( 참조된 테이블 데이터 삭제 )
+- getAllsurvey : 모든 설문 불러오기
+- getSurveyByStatus : 특정 상태의 설문 불러오기 ( 진행 중 | 종료 )
+- getSurveyById : 특정 id의 설문 불러오기
 
-# test coverage
-$ npm run test:cov
-```
+#### Question
 
-## Support
+- createQuestion: 질문 생성하기
+- getAllQuestion : 모든 질문 목록 불러오기
+- getQuestionBySurveyId : 특정 설문의 질문 목록 불러오기
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+#### User
 
-## Stay in touch
+- createUser : 유저 생성하기
+- getAllUser : 모든 유저 불러오기
+- getUserByName : 특정 이름의 유저 불러오기
+- getUserById : 특정 ID의 유저 불러오기
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+#### UserSurvey
 
-## License
+- createUserSurvey : 유저가 참가 할 설문 생성하기.
+- getAllUserSurvey : 현재 생성된 모든 유저들의 설문목록 불러오기
+- getUserSurveyByStatus : 특정 상태의 설문목록 불러오기 ( 미완료 | 완료 )
+- getUserSurveyById : 특정 ID의 설문목록 불러오기
+- sumScore : 유저가 참여한 특정 id의 설문의 완료 여부 및 총 점수 합산하기
+ </p> 
 
-Nest is [MIT licensed](LICENSE).
+
+
+#### Answer
+
+- createAnswer : 응답 생성하기
+- getAllAnswer : 모든 응답 불러오기
+- getAnswerUserSurveyId : 유저가 참여한 설문의 모든 응답 불러오기
+
+#### QuestionOption 
+
+- createQuestionOption : 질문의 선택사항 생성하기
+- getAllQuestionOption : 모든 질문의 선택사항 불러오기
+- getQuestionById : 특정 질문의 선택사항 불러오기
+
+#### AnswerOption
+
+- createAnswerOption : 유저가 고른 선택사항 생성하기
+- getAllAnswerOption : 유저가 선택한 모든 질문의 선택사항 불러오기
+
+
